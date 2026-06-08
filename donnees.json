@@ -1,102 +1,22 @@
 [
-  {
-    "Maladies": "Méningite",
-    "Semaine dernière": 1,
-    "cumul année 2024": 6
-  },
-  {
-    "Maladies": "Rougeole",
-    "Semaine dernière": 0,
-    "cumul année 2024": 4
-  },
-  {
-    "Maladies": "Diarrhée sanglante (Shigella)",
-    "Semaine dernière": 0,
-    "cumul année 2024": 0
-  },
-  {
-    "Maladies": "Paralysie flasque aiguë (PFA)",
-    "Semaine dernière": 0,
-    "cumul année 2024": 3
-  },
-  {
-    "Maladies": "Choléra",
-    "Semaine dernière": 0,
-    "cumul année 2024": 0
-  },
-  {
-    "Maladies": "Dengue suspects",
-    "Semaine dernière": 1,
-    "cumul année 2024": 50
-  },
-  {
-    "Maladies": "Dengue probables",
-    "Semaine dernière": 0,
-    "cumul année 2024": 2
-  },
-  {
-    "Maladies": "Dengue hospitalisés",
-    "Semaine dernière": 0,
-    "cumul année 2024": 2
-  },
-  {
-    "Maladies": "Syndrome grippal",
-    "Semaine dernière": 0,
-    "cumul année 2024": 0
-  },
-  {
-    "Maladies": "Tétanos néonatal",
-    "Semaine dernière": 0,
-    "cumul année 2024": 0
-  },
-  {
-    "Maladies": "IRAS",
-    "Semaine dernière": 0,
-    "cumul année 2024": 24
-  },
-  {
-    "Maladies": "Ictère fébrile",
-    "Semaine dernière": 0,
-    "cumul année 2024": 2
-  },
-  {
-    "Maladies": "COVID-19",
-    "Semaine dernière": 0,
-    "cumul année 2024": 0
-  },
-  {
-    "Maladies": "Décès maternel",
-    "Semaine dernière": 0,
-    "cumul année 2024": 0
-  },
-  {
-    "Maladies": "Mort-né",
-    "Semaine dernière": 0,
-    "cumul année 2024": 57
-  },
-  {
-    "Maladies": "Décès périnatal",
-    "Semaine dernière": 3,
-    "cumul année 2024": 25
-  },
-  {
-    "Maladies": "Total Paludisme simple",
-    "Semaine dernière": 323,
-    "cumul année 2024": 6940
-  },
-  {
-    "Maladies": "Paludisme de moins de 5 ans",
-    "Semaine dernière": 86,
-    "cumul année 2024": 2359
-  },
-  {
-    "Maladies": "Paludisme grave",
-    "Semaine dernière": 10,
-    "cumul année 2024": 510
-  },
-  {
-    "Maladies": "Paludisme grave de moins de 5 ans",
-    "Semaine dernière": 3,
-    "cumul année 2024": 230
-  }
+  { "indicateur": "Méningite", "semaine": 4, "cumul": 32 },
+  { "indicateur": "Rougeole", "semaine": 2, "cumul": 18 },
+  { "indicateur": "Diarrhée sanglante (Shigella)", "semaine": 12, "cumul": 87 },
+  { "indicateur": "Paralysie flasque aiguë (PFA)", "semaine": 1, "cumul": 6 },
+  { "indicateur": "Choléra", "semaine": 0, "cumul": 3 },
+  { "indicateur": "Dengue suspects", "semaine": 23, "cumul": 145 },
+  { "indicateur": "Dengue probables", "semaine": 8, "cumul": 52 },
+  { "indicateur": "Dengue hospitalisés", "semaine": 4, "cumul": 31 },
+  { "indicateur": "Syndrome grippal", "semaine": 87, "cumul": 623 },
+  { "indicateur": "Tétanos néonatal", "semaine": 0, "cumul": 1 },
+  { "indicateur": "IRAS", "semaine": 134, "cumul": 987 },
+  { "indicateur": "Ictère fébrile", "semaine": 7, "cumul": 43 },
+  { "indicateur": "COVID-19", "semaine": 42, "cumul": 315 },
+  { "indicateur": "Décès maternel", "semaine": 1, "cumul": 7 },
+  { "indicateur": "Mort-né", "semaine": 2, "cumul": 13 },
+  { "indicateur": "Décès périnatal", "semaine": 3, "cumul": 21 },
+  { "indicateur": "Total Paludisme simple", "semaine": 211, "cumul": 1450 },
+  { "indicateur": "Paludisme de moins de 5 ans", "semaine": 98, "cumul": 687 },
+  { "indicateur": "Paludisme grave", "semaine": 31, "cumul": 218 },
+  { "indicateur": "Paludisme grave de moins de 5 ans", "semaine": 17, "cumul": 119 }
 ]
