@@ -1,0 +1,429 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>Bulletin Santé Hebdomadaire - Surveillance Épidémiologique</title>
+    <!-- Google Fonts & Font Awesome 6 (icônes) -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,600;14..32,700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <!-- Chart.js pour les cadrans (gauge circulaire) -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: #f0f7fc;
+            font-family: 'Inter', sans-serif;
+            padding: 30px 20px;
+            color: #03396c;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        /* En-tête */
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .header h1 {
+            font-size: 2rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, #005b96, #011f4b);
+            background-clip: text;
+            -webkit-background-clip: text;
+            color: transparent;
+            letter-spacing: -0.3px;
+        }
+
+        .header p {
+            color: #2c7da0;
+            font-weight: 500;
+            margin-top: 8px;
+            font-size: 1rem;
+        }
+
+        .badge-date {
+            background: #e1f0fa;
+            display: inline-block;
+            padding: 6px 18px;
+            border-radius: 60px;
+            font-size: 0.85rem;
+            margin-top: 15px;
+            font-weight: 600;
+            color: #005b96;
+        }
+
+        /* Grille responsive */
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 25px;
+        }
+
+        /* Carte indicateur */
+        .card {
+            background: white;
+            border-radius: 32px;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.03), 0 6px 6px rgba(0, 0, 0, 0.05);
+            padding: 20px 16px 20px 16px;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+            backdrop-filter: blur(0px);
+            border: 1px solid rgba(144, 202, 249, 0.3);
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 25px -12px rgba(0, 91, 150, 0.15);
+            border-color: #90caf9;
+        }
+
+        /* en-tête carte */
+        .card-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 20px;
+            border-bottom: 2px solid #eef2f8;
+            padding-bottom: 12px;
+        }
+
+        .icon-circle {
+            width: 48px;
+            height: 48px;
+            background: linear-gradient(145deg, #eaf6ff, #d4e9fa);
+            border-radius: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.7rem;
+            color: #026aa7;
+        }
+
+        .indicator-title {
+            font-weight: 700;
+            font-size: 1.1rem;
+            line-height: 1.3;
+            color: #03396c;
+        }
+
+        /* zone du cadran */
+        .gauge-container {
+            position: relative;
+            width: 140px;
+            height: 140px;
+            margin: 10px auto 15px auto;
+        }
+
+        canvas.gauge-canvas {
+            width: 100% !important;
+            height: 100% !important;
+        }
+
+        .value-label {
+            text-align: center;
+            font-size: 2rem;
+            font-weight: 800;
+            margin-top: 5px;
+            color: #0a4c6e;
+        }
+
+        .sub {
+            font-size: 0.75rem;
+            font-weight: 500;
+            color: #5e8d9f;
+            text-align: center;
+            margin-top: -5px;
+        }
+
+        .trend {
+            text-align: center;
+            margin-top: 15px;
+            font-size: 0.75rem;
+            background: #f8fafc;
+            padding: 6px 10px;
+            border-radius: 40px;
+            display: inline-block;
+            width: 100%;
+            font-weight: 500;
+        }
+
+        .footer-note {
+            text-align: center;
+            margin-top: 40px;
+            font-size: 0.8rem;
+            color: #4b7a9c;
+            border-top: 1px solid #cde3ef;
+            padding-top: 25px;
+        }
+
+        @media (max-width: 640px) {
+            .grid {
+                gap: 16px;
+            }
+            .card {
+                padding: 16px;
+            }
+            .gauge-container {
+                width: 110px;
+                height: 110px;
+            }
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <div class="header">
+        <h1><i class="fas fa-chart-line" style="color:#2c7da0;"></i> Bulletin Santé Hebdomadaire</h1>
+        <p>Surveillance épidémiologique • Indicateurs clés</p>
+        <div class="badge-date"><i class="far fa-calendar-alt"></i> Semaine du <span id="currentWeek">lundi 5 au dimanche 11 juin 2026</span></div>
+    </div>
+
+    <div class="grid" id="indicatorsGrid"></div>
+    <div class="footer-note">
+        <i class="fas fa-database"></i> Données issues du fichier Excel hébergé sur GitHub (simulation) • Mise à jour hebdomadaire
+    </div>
+</div>
+
+<script>
+    // Définition des indicateurs avec leurs icônes, couleurs personnalisées et valeurs simulées.
+    // Dans la réalité, vous récupérerez ces données via fetch() depuis un CSV/JSON généré par votre Excel sur GitHub.
+    // Exemple : const data = await fetch('https://raw.githubusercontent.com/votre-repo/fichier.json').then(r=>r.json())
+    
+    const indicators = [
+        { name: "Méningite", icon: "fas fa-brain", color: "#5d9bc7", value: 4, max: 20, unit: "cas" },
+        { name: "Rougeole", icon: "fas fa-allergies", color: "#e68a2e", value: 2, max: 15, unit: "cas" },
+        { name: "Diarrhée sanglante (Shigella)", icon: "fas fa-poop", color: "#bc7a5e", value: 12, max: 30, unit: "cas" },
+        { name: "Paralysie flasque aiguë (PFA)", icon: "fas fa-wheelchair", color: "#6f8faf", value: 1, max: 10, unit: "cas" },
+        { name: "Choléra", icon: "fas fa-tint", color: "#469b9c", value: 0, max: 15, unit: "cas" },
+        { name: "Dengue suspects", icon: "fas fa-bug", color: "#e09d32", value: 23, max: 60, unit: "suspects" },
+        { name: "Dengue probables", icon: "fas fa-vial", color: "#cd7b3c", value: 8, max: 40, unit: "probables" },
+        { name: "Dengue hospitalisés", icon: "fas fa-hospital-user", color: "#ce6a85", value: 4, max: 25, unit: "hosp." },
+        { name: "Syndrome grippal", icon: "fas fa-head-side-cough", color: "#5fa7b2", value: 87, max: 200, unit: "cas" },
+        { name: "Tétanos néonatal", icon: "fas fa-baby-carriage", color: "#ba94c2", value: 0, max: 5, unit: "cas" },
+        { name: "IRAS", icon: "fas fa-lungs", color: "#62b5b5", value: 134, max: 300, unit: "cas" },
+        { name: "Ictère fébrile", icon: "fas fa-temperature-high", color: "#e09e4a", value: 7, max: 25, unit: "cas" },
+        { name: "COVID-19", icon: "fas fa-virus", color: "#ac4e6b", value: 42, max: 150, unit: "cas" },
+        { name: "Décès maternel", icon: "fas fa-female", color: "#b3586e", value: 1, max: 8, unit: "décès" },
+        { name: "Mort-né", icon: "fas fa-dove", color: "#978dad", value: 2, max: 10, unit: "cas" },
+        { name: "Décès périnatal", icon: "fas fa-heart-broken", color: "#bf7b8a", value: 3, max: 12, unit: "décès" },
+        { name: "Total Paludisme simple", icon: "fas fa-mosquito", color: "#47945c", value: 211, max: 500, unit: "cas" },
+        { name: "Paludisme de moins de 5 ans", icon: "fas fa-child", color: "#61b873", value: 98, max: 250, unit: "<5 ans" },
+        { name: "Paludisme grave", icon: "fas fa-exclamation-triangle", color: "#da8044", value: 31, max: 80, unit: "cas graves" },
+        { name: "Paludisme grave de moins de 5 ans", icon: "fas fa-baby", color: "#e5955a", value: 17, max: 50, unit: "graves <5" }
+    ];
+
+    // Fonction pour créer un gauge circulaire type "doughnut" (Chart.js)
+    // On affiche la valeur en pourcentage du max ou bien la valeur absolue au centre.
+    function createGaugeChart(canvasId, value, maxValue, color) {
+        const ctx = document.getElementById(canvasId).getContext('2d');
+        const percentage = Math.min(100, (value / maxValue) * 100);
+        const remainder = 100 - percentage;
+        
+        return new Chart(ctx, {
+            type: 'doughnut',
+            data: {
+                datasets: [{
+                    data: [percentage, remainder],
+                    backgroundColor: [color, '#e9ecef'],
+                    borderWidth: 0,
+                    circumference: 270,
+                    rotation: 225,
+                    cutout: '70%',
+                    borderRadius: 8,
+                    spacing: 2,
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: true,
+                plugins: {
+                    tooltip: { enabled: false },
+                    legend: { display: false }
+                },
+                events: []
+            }
+        });
+    }
+
+    // Générer un ID unique pour chaque canvas
+    function generateId(name) {
+        return "gauge_" + name.replace(/\s/g, '_').replace(/[\(\)]/g, '');
+    }
+
+    // Construction dynamique de la grille
+    const gridContainer = document.getElementById('indicatorsGrid');
+    
+    // On stocke les instances de chart pour un éventuel update plus tard
+    let chartInstances = {};
+
+    function buildDashboard() {
+        gridContainer.innerHTML = '';
+        indicators.forEach(ind => {
+            const card = document.createElement('div');
+            card.className = 'card';
+            const canvasId = generateId(ind.name);
+            
+            // Calcul pourcentage pour affichage texte
+            const percentValue = Math.min(100, Math.round((ind.value / ind.max) * 100));
+            
+            card.innerHTML = `
+                <div class="card-header">
+                    <div class="icon-circle" style="background: linear-gradient(145deg, #e6f2fa, #d4e6f2);">
+                        <i class="${ind.icon}" style="color: ${ind.color};"></i>
+                    </div>
+                    <div class="indicator-title">${ind.name}</div>
+                </div>
+                <div class="gauge-container">
+                    <canvas id="${canvasId}" width="140" height="140" class="gauge-canvas"></canvas>
+                </div>
+                <div class="value-label">${ind.value} <span style="font-size:0.9rem;">/ ${ind.max}</span></div>
+                <div class="sub">${ind.unit}  •  ${percentValue}% du seuil</div>
+                <div class="trend">
+                    <i class="fas fa-chart-simple"></i> Seuil épidémique: ${ind.max} ${ind.unit}
+                </div>
+            `;
+            gridContainer.appendChild(card);
+            
+            // Après ajout au DOM, créer le chart
+            const canvasElem = document.getElementById(canvasId);
+            if (canvasElem) {
+                const chart = createGaugeChart(canvasId, ind.value, ind.max, ind.color);
+                chartInstances[canvasId] = chart;
+            }
+        });
+    }
+
+    // Simulation d'un appel vers les données réelles (GitHub)
+    // Vous pouvez remplacer cette fonction pour importer les vraies valeurs depuis un CSV/JSON hébergé.
+    async function fetchDataFromGitHub() {
+        // Exemple concret: décommentez et adaptez l'URL de votre fichier Excel converti en JSON
+        // const response = await fetch('https://raw.githubusercontent.com/votre-utilisateur/votre-repo/main/data_sanitaire.json');
+        // const remoteData = await response.json();
+        // Mettre à jour les valeurs de chaque indicateur selon remoteData
+        
+        // Pour la démo, on va simuler une mise à jour auto avec des variations légères (optionnel)
+        // mais on garde l'affichage initial cohérent. Dans un vrai projet, on remplacerait:
+        /*
+        if (remoteData && remoteData.length) {
+            remoteData.forEach(item => {
+                let found = indicators.find(i => i.name === item.name);
+                if(found) found.value = item.value;
+            });
+            // Rafraîchir les cadrans
+            refreshAllCharts();
+        }
+        */
+        console.log("Prêt à connecter avec le fichier Excel GitHub. Ici, données simulées.");
+    }
+    
+    // Fonction pour mettre à jour toutes les jauges (si on récupère des valeurs fraîches)
+    function refreshAllCharts() {
+        indicators.forEach(ind => {
+            const canvasId = generateId(ind.name);
+            const chart = chartInstances[canvasId];
+            if (chart) {
+                const percentage = Math.min(100, (ind.value / ind.max) * 100);
+                chart.data.datasets[0].data = [percentage, 100 - percentage];
+                chart.update();
+                // Mettre à jour les textes dans la carte
+                const cardDiv = document.getElementById(canvasId)?.closest('.card');
+                if (cardDiv) {
+                    const valLabel = cardDiv.querySelector('.value-label');
+                    if (valLabel) valLabel.innerHTML = `${ind.value} <span style="font-size:0.9rem;">/ ${ind.max}</span>`;
+                    const subSpan = cardDiv.querySelector('.sub');
+                    const percentVal = Math.min(100, Math.round((ind.value / ind.max) * 100));
+                    if (subSpan) subSpan.innerHTML = `${ind.unit}  •  ${percentVal}% du seuil`;
+                }
+            }
+        });
+    }
+    
+    // Optionnel: Mettre à jour la semaine actuelle dynamiquement
+    function setCurrentWeek() {
+        const today = new Date();
+        const startOfWeek = new Date(today);
+        const day = today.getDay();
+        const diffToMonday = (day === 0 ? 6 : day - 1);
+        startOfWeek.setDate(today.getDate() - diffToMonday);
+        const endOfWeek = new Date(startOfWeek);
+        endOfWeek.setDate(startOfWeek.getDate() + 6);
+        const options = { day: 'numeric', month: 'long' };
+        const startStr = startOfWeek.toLocaleDateString('fr-FR', options);
+        const endStr = endOfWeek.toLocaleDateString('fr-FR', options);
+        const weekSpan = document.getElementById('currentWeek');
+        if (weekSpan) weekSpan.innerText = `${startStr} au ${endStr} ${today.getFullYear()}`;
+    }
+    
+    // Simuler un appel périodique aux données si nécessaire, mais pour la démo on garde les valeurs statiques
+    // Pour aller chercher le fichier Excel/GitHub, on peut parser via SheetJS mais le plus simple est d'exporter le tableur en JSON.
+    // Exemple d'intégration GitHub: 
+    async function loadRealDataFromGitHubJSON() {
+        // Remplacez l'URL par le lien RAW de votre fichier JSON (converti depuis Excel)
+        // L'idéal: convertir votre fichier Excel en JSON via un script Python ou outil en ligne.
+        // Si vous voulez lire directement un fichier Excel (.xlsx) depuis JS, utilisez SheetJS (xlsx) mais nécessite d'ajouter la lib.
+        // Pour la démo, nous simulons une récupération qui ne change pas les valeurs.
+        try {
+            // Exemple commenté pour démo :
+            // const response = await fetch('https://raw.githubusercontent.com/monuser/monrepo/main/bulletin_sante.json');
+            // if(!response.ok) throw new Error('Fichier non trouvé');
+            // const data = await response.json();
+            // data.forEach(update => {
+            //    const indicator = indicators.find(i => i.name === update.indicateur);
+            //    if(indicator) indicator.value = update.valeur;
+            // });
+            // refreshAllCharts();
+        } catch(e) {
+            console.warn("Utilisation des données de démo, connexion GitHub non configurée.");
+        }
+    }
+    
+    // Lancement
+    buildDashboard();
+    setCurrentWeek();
+    // Petit délai pour assurer que les canvas existent déjà, mais buildDashboard les crée déjà.
+    // Si vous voulez démontrer la liaison avec GitHub, décommentez la ligne suivante après avoir préparé le JSON.
+    // loadRealDataFromGitHubJSON();
+    
+    // Note pour l'utilisateur : 
+    // 1. Pour connecter le vrai Excel, exportez-le au format JSON (ou CSV) et placez-le sur GitHub.
+    // 2. Modifiez la fonction loadRealDataFromGitHubJSON avec l'URL RAW.
+    // 3. La structure attendue du JSON: [{ indicateur: "Méningite", valeur: 7 }, ...]
+    // 4. Vous pouvez aussi utiliser SheetJS pour charger directement un .xlsx via fetch et ArrayBuffer.
+    
+    // Ajout d'un petit rafraîchissement visuel des tooltips amélioration responsive
+    window.addEventListener('resize', () => {
+        Object.values(chartInstances).forEach(chart => chart?.resize());
+    });
+    
+    // Exemple d'intégration SheetJS (optionnelle, si vous chargez directement le xlsx depuis GitHub)
+    // Ce bloc est optionnel, mais peut être décommenté si vous incluez la lib xlsx (https://cdn.sheetjs.com/xlsx-0.20.2/package/dist/xlsx.full.min.js)
+    /*
+    async function loadExcelFromGitHub() {
+        const url = 'https://raw.githubusercontent.com/votre-repo/bulletin_sante.xlsx'; // chemin raw
+        const resp = await fetch(url);
+        const data = await resp.arrayBuffer();
+        const workbook = XLSX.read(data);
+        const sheet = workbook.Sheets[workbook.SheetNames[0]];
+        const rows = XLSX.utils.sheet_to_json(sheet);
+        rows.forEach(row => {
+            const nomIndicateur = row['Indicateur'];
+            const val = Number(row['Valeur']);
+            const found = indicators.find(i => i.name === nomIndicateur);
+            if(found && !isNaN(val)) found.value = val;
+        });
+        refreshAllCharts();
+    }
+    // loadExcelFromGitHub();
+    */
+</script>
+</body>
+</html>
