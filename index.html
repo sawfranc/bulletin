@@ -246,7 +246,7 @@
     </div>
     
     <div class="footer-note">
-        <i class="fas fa-database"></i> Données issues de <strong>donnée.json</strong> (GitHub) • Mise à jour hebdomadaire
+        <i class="fas fa-database"></i> Données issues de <strong>donnees.json</strong> (GitHub) • Mise à jour hebdomadaire
     </div>
 </div>
 
@@ -407,7 +407,7 @@
     async function loadDataFromGitHub() {
         try {
             // Chemin relatif car le JSON est dans le même dépôt que la page HTML
-            const response = await fetch('donnée.json');
+            const response = await fetch('donnees.json');
             if (!response.ok) {
                 throw new Error(`HTTP ${response.status} - Fichier JSON non trouvé`);
             }
