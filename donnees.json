@@ -1,0 +1,102 @@
+[
+  {
+    "Maladies": "Méningite",
+    "Semaine dernière": 1,
+    "cumul année 2024": 6
+  },
+  {
+    "Maladies": "Rougeole",
+    "Semaine dernière": 0,
+    "cumul année 2024": 4
+  },
+  {
+    "Maladies": "Diarrhée sanglante (Shigella)",
+    "Semaine dernière": 0,
+    "cumul année 2024": 0
+  },
+  {
+    "Maladies": "Paralysie flasque aiguë (PFA)",
+    "Semaine dernière": 0,
+    "cumul année 2024": 3
+  },
+  {
+    "Maladies": "Choléra",
+    "Semaine dernière": 0,
+    "cumul année 2024": 0
+  },
+  {
+    "Maladies": "Dengue suspects",
+    "Semaine dernière": 1,
+    "cumul année 2024": 50
+  },
+  {
+    "Maladies": "Dengue probables",
+    "Semaine dernière": 0,
+    "cumul année 2024": 2
+  },
+  {
+    "Maladies": "Dengue hospitalisés",
+    "Semaine dernière": 0,
+    "cumul année 2024": 2
+  },
+  {
+    "Maladies": "Syndrome grippal",
+    "Semaine dernière": 0,
+    "cumul année 2024": 0
+  },
+  {
+    "Maladies": "Tétanos néonatal",
+    "Semaine dernière": 0,
+    "cumul année 2024": 0
+  },
+  {
+    "Maladies": "IRAS",
+    "Semaine dernière": 0,
+    "cumul année 2024": 24
+  },
+  {
+    "Maladies": "Ictère fébrile",
+    "Semaine dernière": 0,
+    "cumul année 2024": 2
+  },
+  {
+    "Maladies": "COVID-19",
+    "Semaine dernière": 0,
+    "cumul année 2024": 0
+  },
+  {
+    "Maladies": "Décès maternel",
+    "Semaine dernière": 0,
+    "cumul année 2024": 0
+  },
+  {
+    "Maladies": "Mort-né",
+    "Semaine dernière": 0,
+    "cumul année 2024": 57
+  },
+  {
+    "Maladies": "Décès périnatal",
+    "Semaine dernière": 3,
+    "cumul année 2024": 25
+  },
+  {
+    "Maladies": "Total Paludisme simple",
+    "Semaine dernière": 323,
+    "cumul année 2024": 6940
+  },
+  {
+    "Maladies": "Paludisme de moins de 5 ans",
+    "Semaine dernière": 86,
+    "cumul année 2024": 2359
+  },
+  {
+    "Maladies": "Paludisme grave",
+    "Semaine dernière": 10,
+    "cumul année 2024": 510
+  },
+  {
+    "Maladies": "Paludisme grave de moins de 5 ans",
+    "Semaine dernière": 3,
+    "cumul année 2024": 230
+  }
+]
